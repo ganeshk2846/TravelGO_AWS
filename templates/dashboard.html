@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - TravelGo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0047ab;
+            --secondary: #00d2ff;
+            --bg: #f4f7f6;
+            --text: #333;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            color: var(--text);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .btn-logout {
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: 0.3s;
+        }
+        
+        .btn-logout:hover { color: var(--primary); }
+
+        /* Dashboard Container */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Welcome */
+        .welcome-card {
+            background: linear-gradient(120deg, var(--primary), #1e88e5);
+            border-radius: 20px;
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 71, 171, 0.3);
+            margin-bottom: 40px;
+        }
+
+        .welcome-content { position: relative; z-index: 2; }
+        .welcome-card h1 { margin: 0; font-size: 2.2em; }
+        .welcome-card p { opacity: 0.9; margin-top: 10px; font-size: 1.1em; }
+
+        .bg-pattern {
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            font-size: 300px;
+            opacity: 0.1;
+            color: white;
+            transform: rotate(-15deg);
+        }
+
+        /* Quick Actions */
+        .section-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #444;
+            font-weight: 700;
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 5px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .service-card:hover::before { transform: scaleX(1); }
+
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .bus-style { background: #fff3e0; color: #f57c00; }
+        .train-style { background: #e3f2fd; color: #1976d2; }
+        .flight-style { background: #e8f5e9; color: #388e3c; }
+        .hotel-style { background: #f3e5f5; color: #8e24aa; }
+
+        /* Bookings List (Ticket Style) */
+        .bookings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ticket-card {
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .ticket-card:hover { transform: translateX(5px); }
+
+        .ticket-left {
+            width: 8px;
+            background: var(--primary);
+        }
+
+        .ticket-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .booking-info h4 { margin: 0 0 5px; font-size: 1.1em; color: var(--primary); }
+        .booking-route { font-weight: bold; font-size: 1.2em; }
+        .booking-meta { color: #888; font-size: 0.9em; margin-top: 5px; }
+
+        .booking-status {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 50px;
+            color: #aaa;
+            background: white;
+            border-radius: 15px;
+            border: 2px dashed #eee;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .welcome-card {
+                padding: 25px;
+            }
+
+            .welcome-card h1 {
+                font-size: 1.8em;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ticket-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-location-arrow"></i> TravelGo
+        </div>
+        <div class="user-profile">
+            <div class="avatar">{{ name[0] }}</div>
+            <div>
+                <div style="font-weight:bold; font-size:0.9em;">{{ name }}</div>
+                <a href="/logout" class="btn-logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-card">
+            <i class="fas fa-globe-americas bg-pattern"></i>
+            <div class="welcome-content">
+                <h1>Hello, {{ name }}!</h1>
+                <p>Where would you like to go today? Your next adventure awaits.</p>
+            </div>
+        </div>
+
+        <!-- Services -->
+        <h3 class="section-title">Book a Trip</h3>
+        <div class="services-grid">
+            <a href="/bus" class="service-card">
+                <div class="icon-circle bus-style"><i class="fas fa-bus"></i></div>
+                <h3>Bus</h3>
+                <p>Affordable road trips</p>
+            </a>
+            <a href="/train" class="service-card">
+                <div class="icon-circle train-style"><i class="fas fa-train"></i></div>
+                <h3>Train</h3>
+                <p>Scenic rail journeys</p>
+            </a>
+            <a href="/flight" class="service-card">
+                <div class="icon-circle flight-style"><i class="fas fa-plane"></i></div>
+                <h3>Flight</h3>
+                <p>Fastest way to travel</p>
+            </a>
+            <a href="/hotels" class="service-card">
+                <div class="icon-circle hotel-style"><i class="fas fa-hotel"></i></div>
+                <h3>Hotel</h3>
+                <p>Comfortable stays</p>
+            </a>
+        </div>
+
+        <!-- Bookings -->
+        <h3 class="section-title">My Recent Bookings</h3>
+        <div class="bookings-list">
+            {% if bookings %}
+                {% for booking in bookings %}
+                <div class="ticket-card">
+                    <div class="ticket-left"></div>
+                    <div class="ticket-content">
+                        <div class="booking-info">
+                            <h4>{{ booking.type }} Booking</h4>
+                            <div class="booking-route">
+                                {% if booking.source %}{{ booking.source }} <i class="fas fa-arrow-right" style="font-size:0.8em; color:#bbb; margin:0 5px;"></i> {{ booking.destination }}{% else %}{{ booking.details }}{% endif %}
+                            </div>
+                            <div class="booking-meta">
+                                <i class="far fa-calendar-alt"></i> {{ booking.date }} &bull; ID: #{{ booking.booking_id }}
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-weight:bold; font-size:1.2em; color:#333;">₹{{ booking.price }}</div>
+                            <span class="booking-status">Confirmed</span>
+                            <form action="/remove_booking" method="POST" style="display:inline; margin-left:10px;">
+                                <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+                                <button type="submit" style="background:none; border:none; color:#e53935; cursor:pointer;" title="Cancel Booking"><i class="fas fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-suitcase" style="font-size: 40px; margin-bottom: 15px;"></i>
+                    <p>No upcoming trips. Start booking now!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>

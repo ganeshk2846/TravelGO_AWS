@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Ticket - TravelGo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #333;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .ticket-wrapper {
+            background: #fff;
+            width: 100%;
+            max-width: 700px;
+            border-radius: 10px;
+            display: flex;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Perforated Line */
+        .ticket-wrapper::before, .ticket-wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 20px;
+            background: #333;
+            border-radius: 10px;
+            z-index: 2;
+        }
+        .ticket-wrapper::before { left: -10px; }
+        .ticket-wrapper::after { right: 200px; width: 4px; background: repeating-linear-gradient(to bottom, #ccc 0, #ccc 10px, transparent 10px, transparent 20px); border-radius: 0; }
+
+        .ticket-main {
+            flex: 1;
+            padding: 30px;
+            border-right: 2px dashed #ddd;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #0047ab;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            color: #0047ab;
+            font-size: 24px;
+            font-weight: 800;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .status {
+            color: #4CAF50;
+            font-weight: bold;
+            border: 2px solid #4CAF50;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transform: rotate(-5deg);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .info-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .big-value {
+            font-size: 24px;
+            color: #0047ab;
+        }
+
+        .ticket-stub {
+            width: 200px;
+            padding: 30px;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .qr-placeholder {
+            width: 100px;
+            height: 100px;
+            background: url('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=TravelGoBooking') no-repeat center/cover;
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        .btn-print { background: white; color: #333; border: 2px solid #333; }
+        .btn-print:hover { background: #333; color: white; }
+
+        .btn-home { background: #0047ab; color: white; }
+        .btn-home:hover { background: #003380; }
+
+        @media (max-width: 768px) {
+            .ticket-wrapper {
+                flex-direction: column;
+            }
+
+            .ticket-wrapper::before,
+            .ticket-wrapper::after {
+                display: none;
+            }
+
+            .ticket-main {
+                border-right: none;
+                border-bottom: 2px dashed #ddd;
+            }
+
+            .ticket-stub {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .ticket-main {
+                padding: 20px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ticket-wrapper">
+        <div class="ticket-main">
+            <div class="header">
+                <div class="logo"><i class="fas fa-location-arrow"></i> TravelGo</div>
+                <div class="status">CONFIRMED</div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-group">
+                    <span class="label">Booking ID</span>
+                    <span class="value">#{{ booking.booking_id }}</span>
+                </div>
+                <div class="info-group" style="text-align:right;">
+                    <span class="label">Date</span>
+                    <span class="value">{{ booking.date }}</span>
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-group">
+                    <span class="label">Transport</span>
+                    <span class="big-value">{{ booking.transport_id }}</span>
+                    <span style="font-size:12px; color:#666;">Standard Class</span>
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-group">
+                    <span class="label">Seat</span>
+                    <span class="value">{{ booking.seat }}</span>
+                </div>
+                <div class="info-group" style="text-align:right;">
+                    <span class="label">Price</span>
+                    <span class="value">₹{{ booking.price }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="ticket-stub">
+            <div class="qr-placeholder"></div>
+            <div style="font-size:10px; color:#aaa;">SCAN TO VERIFY</div>
+            <div style="margin-top:20px; font-weight:bold; color:#0047ab;">TravelGo</div>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <button class="btn btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+        <a href="/dashboard" class="btn btn-home">Back to Dashboard</a>
+    </div>
+
+</body>
+</html>

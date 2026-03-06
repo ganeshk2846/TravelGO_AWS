@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelGo - Book Your Journey</title>
+    <!-- Using FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar - Blue as per image */
+        .navbar {
+            background-color: #0047ab; /* Strong Blue */
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .navbar .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffcc00;
+        }
+
+        /* Hero Section - Map Background */
+        .hero {
+            /* Vintage Map Image similar to your upload */
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .hero p {
+            font-size: 18px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+
+        /* Features Section - Pink Background */
+        .features-section {
+            background-color: #f8bbd0; /* Light Pink */
+            padding: 50px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        .card h3 {
+            color: #0047ab;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .promo-code {
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* About & Contact - Salmon Background */
+        .content-section {
+            background-color: #ff8a80; /* Salmon/Coral Color */
+            color: #333;
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .content-section h2 {
+            color: #0047ab;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .content-section p {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .contact-details {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .nav-links {
+                display: flex;
+                gap: 15px;
+                font-size: 0.9em;
+            }
+
+            .nav-links a {
+                margin-left: 0;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .features-section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="#" class="logo">TravelGo</a>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact Us</a>
+            <!-- Updated Link to redirect to separate login page -->
+            <a href="/login">Login</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div id="home" class="hero">
+        <h1>Book Bus, Train, Flights & Hotels</h1>
+        <p>Your journey starts here. Find the best travel deals!</p>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <div class="card">
+            <h3>🔥 Featured Deals</h3>
+            <p>Flat 30% off on bus tickets for new users. Book now and save big!</p>
+            <span class="promo-code">Use Code: TRAVEL30</span>
+        </div>
+        
+        <div class="card">
+            <h3>💺 Live Seat Availability</h3>
+            <p>Choose your seats in real-time just like movie ticket booking.</p>
+        </div>
+
+        <div class="card">
+            <h3>🏨 Hotels Near You</h3>
+            <p>Top-rated hotels near your destination. Filter by rating and price.</p>
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+    <div id="about" class="content-section">
+        <h2>About Us</h2>
+        <p>
+            TravelGo is your one-stop travel booking platform. We aim to make your travel experience smooth, affordable, and memorable.
+            Our real-time search lets you find buses, trains, and flights in seconds. With 24/7 customer support and premium hotel partners,
+            we ensure your journey is seamless from start to finish.
+        </p>
+    </div>
+
+    <!-- Contact Us Section -->
+    <div id="contact" class="content-section">
+        <h2>Contact Us</h2>
+        <p>Email: support@travelgo.com</p>
+        <p>Phone: +1 (800) 123-4567</p>
+        <p>Location: Houston, TX, USA</p>
+    </div>
+
+</body>
+</html>

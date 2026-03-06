@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Payment - TravelGo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .payment-container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: left;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0047ab;
+            margin-top: 0;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Summary Box (Light Blue) */
+        .summary-box {
+            background-color: #f0f4f8;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .summary-row {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .label {
+            font-weight: 700;
+            color: #0047ab;
+            width: 100px;
+            flex-shrink: 0;
+            font-size: 15px;
+        }
+
+        .value {
+            color: #333;
+            font-size: 15px;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+
+        /* Form Styling */
+        .form-label {
+            display: block;
+            color: #555;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+            background-color: white;
+        }
+
+        select:focus, input:focus {
+            border-color: #0047ab;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 15px;
+            background-color: #0047ab;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-pay:hover {
+            background-color: #003380;
+        }
+
+        .back-link {
+            display: block;
+            text-align: left;
+            margin-top: 25px;
+            color: #0047ab;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .back-link i {
+            margin-right: 5px;
+        }
+
+        .demo-note {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .payment-container {
+                padding: 25px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            .label {
+                width: 80px;
+                font-size: 13px;
+            }
+
+            .value {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="payment-container">
+        <h2>Confirm and Pay</h2>
+
+        <!-- Booking Summary -->
+        <div class="summary-box">
+            <div class="summary-row">
+                <span class="label">Route:</span>
+                <span class="value">{{ booking.details }}</span>
+            </div>
+            <div class="summary-row">
+                <span class="label">Date:</span>
+                <span class="value">{{ booking.date }}</span>
+            </div>
+            <div class="summary-row">
+                <span class="label">Seats:</span>
+                <span class="value">{{ booking.seat }}</span>
+            </div>
+            <div class="summary-row">
+                <span class="label">Total Price:</span>
+                <span class="value">₹{{ booking.price }}</span>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <form action="/payment" method="POST">
+            <label class="form-label">Payment Method:</label>
+            <select name="method" required>
+                <option value="" disabled selected>-- Select Payment Method --</option>
+                <option value="Net Banking">Net Banking</option>
+                <option value="UPI">UPI</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Debit Card">Debit Card</option>
+                <option value="Wallet">Wallet</option>
+            </select>
+
+            <label class="form-label">Transaction Reference:</label>
+            <input type="text" name="reference" placeholder="Enter transaction/reference ID" required>
+
+            <button type="submit" class="btn-pay">Pay ₹{{ booking.price }}</button>
+            
+            <div class="demo-note">* This is a demo UI. No actual payment is processed.</div>
+        </form>
+
+        <a href="/dashboard" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+
+</body>
+</html>

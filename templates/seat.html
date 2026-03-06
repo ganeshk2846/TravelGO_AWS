@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seat - TravelGo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #666666; /* Dark Grey Background */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .seat-container {
+            text-align: center;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #ffcc00; /* Yellow Title */
+            margin: 0 0 10px 0;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .sub-header {
+            color: #f0f0f0;
+            font-size: 16px;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+
+        .seat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 Columns */
+            gap: 15px;
+            justify-content: center;
+            margin: 0 auto 40px auto;
+            width: fit-content;
+        }
+
+        .seat {
+            width: 55px;
+            height: 55px;
+            background-color: #f0f0f0; /* Light Grey Seat */
+            color: #333;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            transition: 0.2s ease-in-out;
+            user-select: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .seat:hover {
+            background-color: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .seat.selected {
+            background-color: #ffcc00; /* Yellow Selected */
+            color: #000;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.6);
+            transform: scale(1.05);
+            border: 2px solid #e6b800;
+        }
+
+        .btn-confirm {
+            background-color: #ffcc00;
+            color: #222;
+            width: 100%;
+            max-width: 300px;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .btn-confirm:hover {
+            background-color: #e6b800;
+            transform: translateY(-2px);
+        }
+
+        .btn-confirm:disabled {
+            background-color: #999;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            color: #aaa;
+            font-size: 12px;
+        }
+        
+        /* Hidden inputs for form submission */
+        .hidden-inputs { display: none; }
+
+        @media (max-width: 768px) {
+            .seat-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .seat {
+                width: 45px;
+                height: 45px;
+                font-size: 16px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="seat-container">
+        <h2>Select Seats for {{ id }}</h2>
+        <div class="sub-header">
+            Non-AC Sleeper • <span id="displayPrice">₹{{ price }}</span>/person
+        </div>
+
+        <!-- IMPORTANT: Action points to /book to initialize payment session before rendering payment page -->
+        <form action="/book" method="POST" id="bookingForm">
+            <!-- Hidden Fields to send data to backend -->
+            <div class="hidden-inputs">
+                <input type="hidden" name="transport_id" value="{{ id }}">
+                <!-- Base price per seat -->
+                <input type="hidden" id="basePrice" value="{{ price }}">
+                <!-- Final calculated price sent to payment -->
+                <input type="hidden" name="price" id="finalPrice" value="{{ price }}">
+                <!-- Selected seat numbers (e.g., "1, 2") -->
+                <input type="hidden" name="seat" id="selectedSeats" required>
+            </div>
+
+            <div class="seat-grid">
+                <!-- Generating 20 seats matching the image -->
+                <div class="seat" onclick="toggleSeat(this, '1')">1</div>
+                <div class="seat" onclick="toggleSeat(this, '2')">2</div>
+                <div class="seat" onclick="toggleSeat(this, '3')">3</div>
+                <div class="seat" onclick="toggleSeat(this, '4')">4</div>
+                
+                <div class="seat" onclick="toggleSeat(this, '5')">5</div>
+                <div class="seat" onclick="toggleSeat(this, '6')">6</div>
+                <div class="seat" onclick="toggleSeat(this, '7')">7</div>
+                <div class="seat" onclick="toggleSeat(this, '8')">8</div>
+                
+                <div class="seat" onclick="toggleSeat(this, '9')">9</div>
+                <div class="seat" onclick="toggleSeat(this, '10')">10</div>
+                <div class="seat" onclick="toggleSeat(this, '11')">11</div>
+                <div class="seat" onclick="toggleSeat(this, '12')">12</div>
+                
+                <div class="seat" onclick="toggleSeat(this, '13')">13</div>
+                <div class="seat" onclick="toggleSeat(this, '14')">14</div>
+                <div class="seat" onclick="toggleSeat(this, '15')">15</div>
+                <div class="seat" onclick="toggleSeat(this, '16')">16</div>
+                
+                <div class="seat" onclick="toggleSeat(this, '17')">17</div>
+                <div class="seat" onclick="toggleSeat(this, '18')">18</div>
+                <div class="seat" onclick="toggleSeat(this, '19')">19</div>
+                <div class="seat" onclick="toggleSeat(this, '20')">20</div>
+            </div>
+
+            <button type="submit" class="btn-confirm" id="confirmBtn" disabled>
+                Confirm Seats & Pay
+            </button>
+        </form>
+
+        <div class="footer-note">* You can select multiple seats. Price will update automatically.</div>
+    </div>
+
+    <script>
+        const selectedSeatsSet = new Set();
+        const confirmBtn = document.getElementById('confirmBtn');
+        const selectedSeatsInput = document.getElementById('selectedSeats');
+        const finalPriceInput = document.getElementById('finalPrice');
+        const basePrice = parseFloat(document.getElementById('basePrice').value);
+        const displayPriceSpan = document.getElementById('displayPrice');
+
+        function toggleSeat(element, seatNumber) {
+            // Toggle visual state
+            element.classList.toggle('selected');
+
+            // Update logic
+            if (selectedSeatsSet.has(seatNumber)) {
+                selectedSeatsSet.delete(seatNumber);
+            } else {
+                selectedSeatsSet.add(seatNumber);
+            }
+
+            // Update Form Data
+            const seatsArray = Array.from(selectedSeatsSet).sort((a, b) => a - b);
+            selectedSeatsInput.value = seatsArray.join(', '); // Send "1, 2" to backend
+
+            // Calculate Total Price
+            const count = seatsArray.length;
+            const totalPrice = count > 0 ? count * basePrice : basePrice; // Default to base if 0 to show something
+            
+            finalPriceInput.value = totalPrice;
+            
+            // Update UI Button text
+            if (count > 0) {
+                confirmBtn.innerText = `Pay ₹${totalPrice} for ${count} Seat(s)`;
+                confirmBtn.removeAttribute('disabled');
+            } else {
+                confirmBtn.innerText = "Confirm Seats & Pay";
+                confirmBtn.setAttribute('disabled', 'true');
+            }
+        }
+    </script>
+
+</body>
+</html>
