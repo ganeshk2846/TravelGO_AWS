@@ -10,13 +10,14 @@ class Config:
     SECRET_KEY = os.environ.get('FLASK_SECRET_KEY', 'dev-secret-key-change-in-prod')
     DEBUG = os.environ.get('FLASK_DEBUG', False)
     
-    # MongoDB Configuration - SHOULD BE SET IN .env FILE
-    MONGODB_URI = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017')
-    MONGODB_DB = os.environ.get('MONGODB_DB', 'travelgo')
+    # AWS DynamoDB Configuration - SHOULD BE SET IN .env FILE
+    AWS_REGION = os.environ.get('AWS_REGION', 'us-east-1')
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
     
-    # MongoDB Collection Names
-    USERS_COLLECTION = 'users'
-    BOOKINGS_COLLECTION = 'bookings'
+    # DynamoDB Table Names
+    USERS_TABLE = os.environ.get('USERS_TABLE', 'travel-users')
+    BOOKINGS_TABLE = os.environ.get('BOOKINGS_TABLE', 'travel-bookings')
     
     # Session Configuration
     SESSION_COOKIE_SECURE = True
