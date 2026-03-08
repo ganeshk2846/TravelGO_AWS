@@ -1,6 +1,6 @@
 # TravelGo - Full-Stack Travel Booking Platform
 
-A web-based travel booking platform built with Flask and MongoDB. TravelGo simplifies the process of reserving buses, trains, flights, and hotels through a unified interface.
+A web-based travel booking platform built with Flask and AWS DynamoDB. TravelGo simplifies the process of reserving buses, trains, flights, and hotels through a unified interface.
 
 ## 🌟 Features
 
@@ -9,7 +9,7 @@ A web-based travel booking platform built with Flask and MongoDB. TravelGo simpl
 - **Dynamic Seat Selection**: Choose seats in real-time with interactive UI
 - **Booking Management**: View, track, and cancel bookings from personalized dashboard
 - **Responsive Design**: Works seamlessly on desktop, tablet, and mobile devices
-- **MongoDB Integration**: Persistent data storage with MongoDB
+- **AWS DynamoDB Integration**: Persistent data storage with AWS DynamoDB
 
 ## 📋 Project Structure
 
@@ -38,7 +38,8 @@ TravelGo/
 
 ### Prerequisites
 - Python 3.8+
-- MongoDB installed and running locally or accessible via connection string
+- AWS Account with DynamoDB access
+- AWS CLI configured with credentials
 - pip (Python package manager)
 
 ### Installation
@@ -47,8 +48,6 @@ TravelGo/
 ```bash
 cd d:\AWS_PROJECT
 ```
-
-# Travel_GO
 
 2. **Create a virtual environment**
 ```bash
@@ -61,16 +60,41 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. **Configure environment variables**
+4. **Set up DynamoDB Tables**
+
+Create two tables in AWS Console or using AWS CLI:
+
+```bash
+# Users table
+aws dynamodb create-table \
+    --table-name travel-users \
+    --attribute-definitions AttributeName=email,AttributeType=S \
+    --key-schema AttributeName=email,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST \
+    --region us-east-1
+
+# Bookings table
+aws dynamodb create-table \
+    --table-name travel-bookings \
+    --attribute-definitions AttributeName=booking_id,AttributeType=S AttributeName=email,AttributeType=S \
+    --key-schema AttributeName=booking_id,KeyType=HASH AttributeName=email,KeyType=RANGE \
+    --billing-mode PAY_PER_REQUEST \
+    --region us-east-1
+```
+
+5. **Configure environment variables**
 ```bash
 # Create a .env file in the project root with the following variables:
 FLASK_SECRET_KEY=your-secret-key-here
-MONGODB_URI=mongodb://localhost:27017
-MONGODB_DB=travelgo
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+USERS_TABLE=travel-users
+BOOKINGS_TABLE=travel-bookings
 FLASK_ENV=development
 ```
 
-5. **Run the application**
+6. **Run the application**
 ```bash
 python app.py
 ```
@@ -86,9 +110,14 @@ The application will be available at `http://localhost:5000`
 FLASK_SECRET_KEY=your-secret-key-here
 FLASK_DEBUG=False
 
-# MongoDB Configuration
-MONGODB_URI=mongodb://localhost:27017
-MONGODB_DB=travelgo
+# AWS Configuration
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your-aws-access-key
+AWS_SECRET_ACCESS_KEY=your-aws-secret-key
+
+# DynamoDB Table Names
+USERS_TABLE=travel-users
+BOOKINGS_TABLE=travel-bookings
 
 # Application Settings
 FLASK_ENV=production
@@ -97,14 +126,14 @@ FLASK_ENV=production
 ## 📊 AWS Services Required
 
 ### 1. **DynamoDB Tables**
-- `travel-Users`: Stores user account information
+- `travel-users`: Stores user account information
   - Primary Key: `email`
   - Fields: name, password, logins
 
-- `Bookings`: Stores all booking records
-  - Primary Key: `booking_id`
-  - GSI: `email-index` (for querying bookings by user)
-  - Fields: email, type, transport_id, date, seat, price, payment_method
+- `travel-bookings`: Stores all booking records
+  - Partition Key: `booking_id`
+  - Sort Key: `email`
+  - Fields: type, transport_id, date, seat, price, payment_method, payment_reference, created_at
 
 ### 2. **AWS SNS**
 - Topic: `TravelGoNotifications`
@@ -281,3 +310,5 @@ This project is provided as-is for educational purposes.
 **Version**: 1.0.0  
 **Last Updated**: March 2026  
 **Status**: Active Development
+#   T r a v e l G o  
+ 
