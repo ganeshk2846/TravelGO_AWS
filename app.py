@@ -12,10 +12,10 @@ app = Flask(__name__)
 app.secret_key = "your-secret-key-change-in-production"
 
 # ---------------- AWS CONFIGURATION ----------------
-AWS_REGION = "ap-south-1"
+AWS_REGION = "us-east-1"
 USERS_TABLE = "travel-Users"
 BOOKINGS_TABLE = "Bookings"
-SNS_TOPIC_ARN = "arn:aws:sns:ap-south-1:336449003024:TravelGoNotifications"
+SNS_TOPIC_ARN = "arn:aws:sns:us-east-1:336449003024:TravelGoNotifications"
 
 # Initialize AWS Services
 dynamodb = boto3.resource('dynamodb', region_name=AWS_REGION)
